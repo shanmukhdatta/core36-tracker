@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Core 36 — Pattern Map</title>
+<style>
+  :root{
+    --bg: #0c1420;
+    --bg-panel: #101b2b;
+    --line: #22344a;
+    --paper: #16233590;
+    --amber: #e0a84d;
+    --amber-dim: #8a6b34;
+    --green: #6fbf8e;
+    --text: #d7e2ee;
+    --text-dim: #7d90a6;
+    --mono: 'JetBrains Mono', 'Courier New', monospace;
+  }
+  * { box-sizing: border-box; }
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:var(--mono);}
+
+  body{
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 34px 34px;
+    background-attachment: fixed;
+    min-height:100vh;
+    padding: 28px 16px 80px;
+  }
+
+  header{
+    max-width: 880px;
+    margin: 0 auto 28px;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 18px;
+  }
+  .eyebrow{
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--amber-dim);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  h1{
+    font-size: 26px;
+    margin: 0 0 6px;
+    color: var(--text);
+    letter-spacing: -0.5px;
+  }
+  .sub{
+    color: var(--text-dim);
+    font-size: 13px;
+    line-height: 1.6;
+    max-width: 620px;
+  }
+
+  .progress-wrap{
+    max-width: 880px;
+    margin: 0 auto 24px;
+    display:flex;
+    align-items:center;
+    gap: 14px;
+  }
+  .progress-track{
+    flex:1;
+    height: 6px;
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    position: relative;
+    overflow:hidden;
+  }
+  .progress-fill{
+    height:100%;
+    background: linear-gradient(90deg, var(--amber-dim), var(--amber));
+    width:0%;
+    transition: width .4s ease;
+  }
+  #progress-label{
+    font-size: 12px;
+    color: var(--amber);
+    white-space: nowrap;
+    min-width: 64px;
+    text-align:right;
+  }
+
+  .grid{
+    max-width: 880px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 14px;
+  }
+
+  .section{
+    background: var(--paper);
+    border: 1px solid var(--line);
+    padding: 14px 16px 10px;
+    position: relative;
+  }
+  .section-head{
+    display:flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 10px;
+  }
+  .section-num{
+    color: var(--amber-dim);
+    font-size: 11px;
+    letter-spacing: 2px;
+  }
+  .section-name{
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: 0.2px;
+  }
+  .section-count{
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+
+  .prob{
+    display:flex;
+    align-items:flex-start;
+    gap: 10px;
+    padding: 7px 0;
+    border-top: 1px dashed var(--line);
+  }
+  .prob:first-of-type{ border-top: none; }
+
+  .prob input[type=checkbox]{
+    appearance: none;
+    width: 16px; height: 16px;
+    border: 1px solid var(--text-dim);
+    background: transparent;
+    margin-top: 2px;
+    cursor: pointer;
+    flex-shrink: 0;
+    position: relative;
+  }
+  .prob input[type=checkbox]:checked{
+    background: var(--green);
+    border-color: var(--green);
+  }
+  .prob input[type=checkbox]:checked::after{
+    content: "✓";
+    position:absolute; top:-3px; left:2px;
+    font-size: 12px;
+    color: #0c1420;
+  }
+
+  .prob-body{ flex:1; min-width:0; }
+  .prob-title-row{
+    display:flex;
+    justify-content: space-between;
+    gap: 8px;
+    align-items:baseline;
+  }
+  .prob-link{
+    color: var(--text);
+    text-decoration: none;
+    font-size: 13.5px;
+    border-bottom: 1px solid transparent;
+  }
+  .prob-link:hover{ border-bottom-color: var(--amber); color: var(--amber); }
+  .prob.done .prob-link{ color: var(--text-dim); text-decoration: line-through; text-decoration-color: var(--line); }
+
+  .lc-tag{
+    font-size: 10.5px;
+    color: var(--amber-dim);
+    white-space: nowrap;
+  }
+  .pattern{
+    font-size: 11.5px;
+    color: var(--text-dim);
+    margin-top: 2px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .pattern:hover{ color: var(--amber); }
+  .pattern .caret{
+    font-size: 9px;
+    transition: transform .2s ease;
+    color: var(--amber-dim);
+  }
+  .pattern.open .caret{ transform: rotate(90deg); }
+
+  .details{
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .25s ease;
+  }
+  .details.open{ max-height: 220px; }
+  .details-inner{
+    margin-top: 8px;
+    padding: 9px 10px;
+    background: #0c1420;
+    border-left: 2px solid var(--amber-dim);
+    font-size: 11.5px;
+    line-height: 1.65;
+    color: var(--text-dim);
+  }
+  .details-inner .d-row{ margin-bottom: 5px; }
+  .details-inner .d-row:last-child{ margin-bottom: 0; }
+  .details-inner b{
+    color: var(--text);
+    font-weight: 600;
+  }
+  .complexity{
+    color: var(--green);
+  }
+
+  .stage-tag{
+    font-size: 9.5px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 1px 5px;
+    border: 1px solid var(--line);
+    color: var(--text-dim);
+    margin-left: 6px;
+  }
+
+  footer{
+    max-width: 880px;
+    margin: 32px auto 0;
+    color: var(--text-dim);
+    font-size: 11px;
+    border-top: 1px solid var(--line);
+    padding-top: 14px;
+    display:flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  #reset-btn{
+    background:none;
+    border: 1px solid var(--line);
+    color: var(--text-dim);
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 4px 10px;
+    cursor: pointer;
+  }
+  #reset-btn:hover{ border-color: var(--amber-dim); color: var(--amber); }
+
+  #save-flag{
+    color: var(--green);
+    opacity: 0;
+    transition: opacity .3s;
+    font-size: 11px;
+  }
+  #save-flag.show{ opacity: 1; }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Core Set · 18 Sections · 36 Problems</div>
+  <h1>Pattern Map</h1>
+  <div class="sub">Two problems per section — one basic, one generalized. Tick off as you solve. Progress saves automatically and reloads next time you open this.</div>
+</header>
+
+<div class="progress-wrap">
+  <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+  <div id="progress-label">0 / 36</div>
+</div>
+
+<div class="grid" id="grid"></div>
+
+<footer>
+  <span id="save-flag">saved</span>
+  <button id="reset-btn">reset progress</button>
+</footer>
+
+<script>
+const SECTIONS = [
+  ["Arrays & Hashing", [
+    ["Two Sum", 1, "basic", "HashMap lookup, complement technique", {
+      recognize: "Need to find a pair/element satisfying a condition, fast.",
+      approach: "Brute force checks every pair (O(n²)). Instead, walk once and store each value's index in a hashmap; at each step check if target-num is already in the map.",
+      complexity: "O(n) time, O(n) space"
+    }],
+    ["Product of Array Except Self", 238, "advanced", "Prefix/suffix products, O(n) optimization", {
+      recognize: "Need product/sum of 'everything except me' without division.",
+      approach: "Brute force is O(n²) or uses division (fails on zeros). Instead, build a prefix-product array left→right, then multiply in a suffix-product pass right→left, combining into the answer in one array.",
+      complexity: "O(n) time, O(1) extra space (excluding output)"
+    }]
+  ]],
+  ["Two Pointers", [
+    ["Valid Palindrome", 125, "basic", "Opposite-direction pointers", {
+      recognize: "Comparing from both ends of a sequence, symmetric check.",
+      approach: "Brute force reverses the string and compares (O(n) space). Instead, use two pointers from start and end, skip non-alphanumeric chars, compare and move inward.",
+      complexity: "O(n) time, O(1) space"
+    }],
+    ["3Sum", 15, "advanced", "Sorting + two pointers + duplicate handling", {
+      recognize: "Fixed number of elements summing to a target, need all unique combinations.",
+      approach: "Brute force is O(n³) checking all triplets. Instead, sort the array, fix one element, then use two pointers on the remaining subarray to find pairs summing to -fixed, skipping duplicates.",
+      complexity: "O(n²) time, O(1) extra space (excluding sort)"
+    }]
+  ]],
+  ["Sliding Window", [
+    ["Best Time to Buy and Sell Stock", 121, "basic", "Variable-size window / tracking minimum", {
+      recognize: "Single pass, tracking a running min/max to maximize a difference.",
+      approach: "Brute force checks every buy-sell pair (O(n²)). Instead, walk once tracking the minimum price seen so far and the best profit if sold today.",
+      complexity: "O(n) time, O(1) space"
+    }],
+    ["Longest Substring Without Repeating Characters", 3, "advanced", "Dynamic window + HashSet/HashMap", {
+      recognize: "Longest/shortest contiguous substring satisfying a constraint.",
+      approach: "Brute force checks all substrings (O(n²) or worse). Instead, expand a right pointer, and when a duplicate appears, shrink the left pointer past the previous occurrence using a hashmap of last-seen indices.",
+      complexity: "O(n) time, O(min(n, charset)) space"
+    }]
+  ]],
+  ["Stack", [
+    ["Valid Parentheses", 20, "basic", "Stack matching", {
+      recognize: "Nested/matching structure, 'most recent opener closes first'.",
+      approach: "Push opening brackets onto a stack; on a closing bracket, check it matches the top of the stack and pop. Invalid if mismatch or stack not empty at the end.",
+      complexity: "O(n) time, O(n) space"
+    }],
+    ["Daily Temperatures", 739, "advanced", "Monotonic stack", {
+      recognize: "'Next greater/smaller element' type question, one pass needed.",
+      approach: "Brute force compares each element to all future ones (O(n²)). Instead, keep a stack of indices with decreasing temperatures; when a warmer day appears, pop and resolve the wait for each.",
+      complexity: "O(n) time, O(n) space"
+    }]
+  ]],
+  ["Binary Search", [
+    ["Binary Search", 704, "basic", "Core binary search template", {
+      recognize: "Sorted array, looking for a value or a boundary.",
+      approach: "Maintain lo/hi pointers, compare mid to target, narrow the half that could contain it. Watch off-by-one on lo=mid+1 / hi=mid-1.",
+      complexity: "O(log n) time, O(1) space"
+    }],
+    ["Koko Eating Bananas", 875, "advanced", "Binary search on the answer space", {
+      recognize: "'Minimize the maximum' or 'find smallest value that satisfies a feasibility check' — the answer itself is monotonic.",
+      approach: "Binary search over possible speeds (1..max pile), and for each candidate speed run a feasibility check (can she finish in time?) to decide which half to keep.",
+      complexity: "O(n log m) time where m = max pile size"
+    }]
+  ]],
+  ["Linked List", [
+    ["Reverse Linked List", 206, "basic", "Pointer manipulation", {
+      recognize: "Need to change link direction or rewire nodes in place.",
+      approach: "Walk the list with prev/curr pointers; at each node, save curr.next, point curr.next to prev, then advance prev and curr.",
+      complexity: "O(n) time, O(1) space"
+    }],
+    ["Linked List Cycle", 141, "advanced", "Fast and slow pointers", {
+      recognize: "Need to detect a cycle, find a midpoint, or find the Nth-from-end node without extra space.",
+      approach: "Move slow pointer 1 step and fast pointer 2 steps at a time. If there's a cycle, fast will eventually lap and equal slow.",
+      complexity: "O(n) time, O(1) space"
+    }]
+  ]],
+  ["Trees", [
+    ["Maximum Depth of Binary Tree", 104, "basic", "DFS recursion", {
+      recognize: "Any property computed bottom-up from subtrees (height, sum, balance).",
+      approach: "Recursively compute depth of left and right subtrees, return 1 + max(left, right). Base case: null node returns 0.",
+      complexity: "O(n) time, O(h) space for recursion stack"
+    }],
+    ["Binary Tree Level Order Traversal", 102, "advanced", "BFS using queue", {
+      recognize: "Need to process a tree/graph level-by-level or find shortest steps.",
+      approach: "Use a queue; process all nodes currently in the queue as one level, pushing their children for the next level, before moving on.",
+      complexity: "O(n) time, O(n) space"
+    }]
+  ]],
+  ["Tries", [
+    ["Implement Trie (Prefix Tree)", 208, "basic", "Insert / search / prefix structure", {
+      recognize: "Repeated prefix lookups across many words.",
+      approach: "Each node holds a map of char→child node and an is-end flag. Insert walks/creates nodes per character; search/startsWith walks and checks existence (and is-end for exact search).",
+      complexity: "O(L) per operation, L = word length"
+    }],
+    ["Word Search II", 212, "advanced", "Trie + DFS/backtracking", {
+      recognize: "Searching a grid/graph for multiple target words at once.",
+      approach: "Build a trie of all target words, then DFS from every grid cell, walking the trie in parallel with the DFS path so you prune paths that can't extend any word.",
+      complexity: "O(rows·cols·4^L) worst case, pruned heavily by the trie"
+    }]
+  ]],
+  ["Heap / Priority Queue", [
+    ["Kth Largest Element in an Array", 215, "basic", "Min-heap / size-k heap", {
+      recognize: "'Kth largest/smallest' or 'top K' without needing full sort.",
+      approach: "Brute force sorts the whole array (O(n log n)). Instead, maintain a min-heap of size K; push each element, pop when size exceeds K — the heap's top ends up being the Kth largest.",
+      complexity: "O(n log k) time, O(k) space"
+    }],
+    ["Find Median from Data Stream", 295, "advanced", "Two heaps, balancing technique", {
+      recognize: "Need a running median or a value that splits data into two halves, with insertions over time.",
+      approach: "Keep a max-heap for the lower half and a min-heap for the upper half, rebalancing sizes after each insert so they differ by at most 1. Median is the top of one heap, or the average of both tops.",
+      complexity: "O(log n) per insert, O(1) per median query"
+    }]
+  ]],
+  ["Backtracking", [
+    ["Subsets", 78, "basic", "Include/exclude decision tree", {
+      recognize: "Need to generate all possible subsets/combinations.",
+      approach: "At each element, branch into two paths: include it or don't, recursing until you've decided for every element; each leaf is one subset.",
+      complexity: "O(2^n) time, O(n) recursion depth"
+    }],
+    ["Combination Sum", 39, "advanced", "Backtracking with reuse and pruning", {
+      recognize: "Generate all combinations meeting a target, elements can repeat, need to prune invalid branches early.",
+      approach: "DFS through candidates, at each step either reuse the current candidate again or move to the next one, subtracting from the remaining target, and stop/backtrack once remaining < 0.",
+      complexity: "O(n^(target/min)) time in the worst case"
+    }]
+  ]],
+  ["Graphs", [
+    ["Number of Islands", 200, "basic", "DFS/BFS on grids", {
+      recognize: "Counting connected components in a grid or graph.",
+      approach: "Scan every cell; on an unvisited land cell, flood-fill (DFS or BFS) marking all connected land as visited, and count that as one island.",
+      complexity: "O(rows·cols) time and space"
+    }],
+    ["Course Schedule", 207, "advanced", "Directed graph + cycle detection", {
+      recognize: "Dependency ordering, 'can all tasks be completed' type question.",
+      approach: "Build an adjacency list from prerequisites, then do a DFS tracking nodes in the current recursion path — if you revisit a node still in that path, there's a cycle (topological sort is impossible).",
+      complexity: "O(V+E) time and space"
+    }]
+  ]],
+  ["Advanced Graphs", [
+    ["Network Delay Time", 743, "basic", "Dijkstra's shortest path", {
+      recognize: "Shortest path with non-negative weighted edges from a single source.",
+      approach: "Use a min-heap of (distance, node); pop the closest unvisited node, relax its neighbors' distances, and repeat until the heap is empty.",
+      complexity: "O(E log V) time"
+    }],
+    ["Cheapest Flights Within K Stops", 787, "advanced", "Modified shortest path / Bellman-Ford-style DP", {
+      recognize: "Shortest path but with a constraint on number of edges/stops used — Dijkstra's greedy assumption breaks.",
+      approach: "Run Bellman-Ford limited to K+1 relaxation rounds: each round, relax all edges using distances frozen from the previous round (avoids using more than K stops in one path).",
+      complexity: "O(K·E) time"
+    }]
+  ]],
+  ["1-D Dynamic Programming", [
+    ["Climbing Stairs", 70, "basic", "Basic DP recurrence", {
+      recognize: "Counting ways to reach a state, where the current state depends on a fixed few previous states.",
+      approach: "ways(n) = ways(n-1) + ways(n-2), same shape as Fibonacci. Track just the last two values instead of a full array.",
+      complexity: "O(n) time, O(1) space"
+    }],
+    ["House Robber", 198, "advanced", "Take/not-take DP pattern", {
+      recognize: "Choosing a subset of items with an adjacency/exclusion constraint to maximize value.",
+      approach: "At each house, either skip it (carry forward best so far) or rob it (best two houses back + current value); track running max of both choices.",
+      complexity: "O(n) time, O(1) space"
+    }]
+  ]],
+  ["2-D Dynamic Programming", [
+    ["Unique Paths", 62, "basic", "Grid DP", {
+      recognize: "Counting paths or optimizing a value while moving through a 2D grid with limited move directions.",
+      approach: "dp[r][c] = dp[r-1][c] + dp[r][c-1] (ways to reach a cell = sum of ways to reach the cells that can move into it). First row/column are all 1.",
+      complexity: "O(rows·cols) time, O(cols) space with rolling array"
+    }],
+    ["Longest Common Subsequence", 1143, "advanced", "Classic 2D DP", {
+      recognize: "Comparing two sequences for a longest/shortest matching structure.",
+      approach: "Build a 2D table dp[i][j] = LCS of first i chars of s1 and first j chars of s2. If chars match, dp[i][j] = dp[i-1][j-1]+1, else max of dropping one char from either string.",
+      complexity: "O(m·n) time and space"
+    }]
+  ]],
+  ["Greedy", [
+    ["Maximum Subarray", 53, "basic", "Kadane's algorithm", {
+      recognize: "Contiguous subarray with max/min sum.",
+      approach: "Walk once, keeping a running sum; if the running sum goes negative, reset it to 0 (a negative prefix can only hurt future sums). Track the max seen.",
+      complexity: "O(n) time, O(1) space"
+    }],
+    ["Jump Game", 55, "advanced", "Greedy reachability", {
+      recognize: "'Can you reach the end' with locally-limited moves, where a greedy choice is provably optimal.",
+      approach: "Track the farthest index reachable so far while scanning left to right; if the current index ever exceeds that farthest reach, it's unreachable.",
+      complexity: "O(n) time, O(1) space"
+    }]
+  ]],
+  ["Intervals", [
+    ["Merge Intervals", 56, "basic", "Sorting + merging", {
+      recognize: "Overlapping ranges that need to be combined.",
+      approach: "Sort intervals by start time, then walk through and merge the current interval into the last one in the result if they overlap, otherwise append a new one.",
+      complexity: "O(n log n) time, O(n) space"
+    }],
+    ["Non-overlapping Intervals", 435, "advanced", "Interval greedy selection", {
+      recognize: "Choosing a max/min subset of intervals under a non-overlap constraint.",
+      approach: "Sort by end time, then greedily keep an interval if its start is ≥ the previous kept interval's end; otherwise it must be removed. Count removals.",
+      complexity: "O(n log n) time, O(1) space"
+    }]
+  ]],
+  ["Math & Geometry", [
+    ["Rotate Image", 48, "basic", "Matrix manipulation, transpose + reverse", {
+      recognize: "In-place matrix transformation without extra grid.",
+      approach: "Transpose the matrix (swap dp[i][j] with dp[j][i]), then reverse each row — this composition equals a 90° clockwise rotation.",
+      complexity: "O(n²) time, O(1) space"
+    }],
+    ["Spiral Matrix", 54, "advanced", "Boundary simulation", {
+      recognize: "Traversing a matrix in a non-standard (spiral/diagonal) order.",
+      approach: "Maintain top/bottom/left/right boundaries; traverse the top row, right column, bottom row, left column in order, shrinking each boundary after its pass, until boundaries cross.",
+      complexity: "O(rows·cols) time, O(1) extra space"
+    }]
+  ]],
+  ["Bit Manipulation", [
+    ["Single Number", 136, "basic", "XOR properties", {
+      recognize: "Finding an unpaired element where everything else appears in pairs.",
+      approach: "XOR all elements together — matching pairs cancel to 0 (a^a=0), leaving only the unpaired value.",
+      complexity: "O(n) time, O(1) space"
+    }],
+    ["Counting Bits", 338, "advanced", "Bit manipulation + DP relationship", {
+      recognize: "Computing a property for every number 0..n efficiently by reusing previous answers.",
+      approach: "dp[i] = dp[i >> 1] + (i & 1) — the bit count of i equals the bit count of i with its last bit dropped, plus that last bit.",
+      complexity: "O(n) time, O(n) space"
+    }]
+  ]]
+];
+
+const STORAGE_KEY = "core36-progress";
+let state = {};
+
+function slugify(title){
+  return title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+}
+
+function render(){
+  const grid = document.getElementById("grid");
+  grid.innerHTML = "";
+  let secIdx = 0;
+  for(const [name, probs] of SECTIONS){
+    secIdx++;
+    const sec = document.createElement("div");
+    sec.className = "section";
+
+    const doneCount = probs.filter(p => state[`${secIdx}-${p[1]}`]).length;
+
+    sec.innerHTML = `
+      <div class="section-head">
+        <div>
+          <span class="section-num">${String(secIdx).padStart(2,'0')}</span>
+          <span class="section-name">${name}</span>
+        </div>
+        <span class="section-count">${doneCount}/2</span>
+      </div>
+    `;
+
+    for(const [title, lc, stage, pattern, info] of probs){
+      const key = `${secIdx}-${lc}`;
+      const checked = !!state[key];
+      const detailsId = `d-${key}`;
+      const row = document.createElement("div");
+      row.className = "prob" + (checked ? " done" : "");
+      row.innerHTML = `
+        <input type="checkbox" ${checked ? "checked" : ""} data-key="${key}">
+        <div class="prob-body">
+          <div class="prob-title-row">
+            <a class="prob-link" href="https://leetcode.com/problems/${slugify(title)}/" target="_blank" rel="noopener">${title}<span class="stage-tag">${stage}</span></a>
+            <span class="lc-tag">LC ${lc}</span>
+          </div>
+          <div class="pattern" data-target="${detailsId}"><span class="caret">▸</span>${pattern}</div>
+          <div class="details" id="${detailsId}">
+            <div class="details-inner">
+              <div class="d-row"><b>Recognize:</b> ${info.recognize}</div>
+              <div class="d-row"><b>Approach:</b> ${info.approach}</div>
+              <div class="d-row"><b>Complexity:</b> <span class="complexity">${info.complexity}</span></div>
+            </div>
+          </div>
+        </div>
+      `;
+      sec.appendChild(row);
+    }
+    grid.appendChild(sec);
+  }
+
+  document.querySelectorAll('.prob input[type=checkbox]').forEach(cb => {
+    cb.addEventListener('change', onToggle);
+  });
+
+  document.querySelectorAll('.pattern').forEach(p => {
+    p.addEventListener('click', () => {
+      const target = document.getElementById(p.dataset.target);
+      p.classList.toggle('open');
+      target.classList.toggle('open');
+    });
+  });
+
+  updateProgress();
+}
+
+function updateProgress(){
+  const total = 36;
+  const done = Object.values(state).filter(Boolean).length;
+  document.getElementById("progress-fill").style.width = `${(done/total)*100}%`;
+  document.getElementById("progress-label").textContent = `${done} / ${total}`;
+}
+
+async function onToggle(e){
+  const key = e.target.dataset.key;
+  state[key] = e.target.checked;
+  e.target.closest('.prob').classList.toggle('done', e.target.checked);
+  updateProgress();
+  await saveState();
+}
+
+async function saveState(){
+  try{
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    flashSaved();
+  }catch(err){
+    console.error("save failed", err);
+  }
+}
+
+function flashSaved(){
+  const el = document.getElementById("save-flag");
+  el.classList.add("show");
+  setTimeout(() => el.classList.remove("show"), 900);
+}
+
+async function loadState(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(raw){
+      state = JSON.parse(raw);
+    }
+  }catch(err){
+    state = {};
+  }
+}
+
+document.getElementById("reset-btn").addEventListener("click", async () => {
+  if(!confirm("Clear all checked progress?")) return;
+  state = {};
+  await saveState();
+  render();
+});
+
+(async function init(){
+  await loadState();
+  render();
+})();
+</script>
+</body>
+</html>
