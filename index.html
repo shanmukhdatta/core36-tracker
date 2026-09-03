@@ -3,6 +3,894 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blind 75 — Build Sheet</title>
+<meta name="description" content="A day-by-day tracker for the Blind 75 interview prep list.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy: #0B2545;
+    --navy-deep: #071A34;
+    --panel: #0F2E56;
+    --paper: #F3EFE3;
+    --paper-dim: #E7E1CE;
+    --line-fine: rgba(163, 200, 234, 0.09);
+    --line-bold: rgba(163, 200, 234, 0.16);
+    --ink: #1C2B3A;
+    --ink-dim: #55677A;
+    --on-navy: #E7F0FB;
+    --on-navy-dim: #93AEC9;
+    --amber: #E3A857;
+    --amber-dim: #B98A46;
+    --teal: #63C9BC;
+    --red: #D9765B;
+    --radius-s: 3px;
+    --radius-m: 5px;
+    --serif-scale: 1;
+    --font-display: 'Space Grotesk', sans-serif;
+    --font-body: 'IBM Plex Sans', sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior: auto; }
+    *{ animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+  }
+
+  body{
+    margin:0;
+    font-family: var(--font-body);
+    background: var(--navy);
+    color: var(--on-navy);
+    min-height: 100vh;
+    background-image:
+      repeating-linear-gradient(0deg, var(--line-bold) 0, var(--line-bold) 1px, transparent 1px, transparent 96px),
+      repeating-linear-gradient(90deg, var(--line-bold) 0, var(--line-bold) 1px, transparent 1px, transparent 96px),
+      repeating-linear-gradient(0deg, var(--line-fine) 0, var(--line-fine) 1px, transparent 1px, transparent 16px),
+      repeating-linear-gradient(90deg, var(--line-fine) 0, var(--line-fine) 1px, transparent 1px, transparent 16px);
+    background-attachment: fixed;
+  }
+
+  a{ color: var(--amber); }
+  a:hover{ color: var(--teal); }
+  :focus-visible{ outline: 2px solid var(--teal); outline-offset: 2px; }
+
+  .wrap{ max-width: 1120px; margin: 0 auto; padding: 28px 20px 80px; }
+
+  /* ---------- Title block ---------- */
+  .titleblock{
+    border: 1px solid var(--line-bold);
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0;
+  }
+  .titleblock-main{ padding: 26px 26px 20px; }
+  .titleblock-eyebrow{
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--amber);
+    margin: 0 0 10px;
+  }
+  .titleblock-main h1{
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(34px, 5vw, 54px);
+    line-height: 1.02;
+    margin: 0 0 12px;
+    color: var(--on-navy);
+  }
+  .titleblock-main p{
+    max-width: 52ch;
+    color: var(--on-navy-dim);
+    font-size: 15px;
+    line-height: 1.55;
+    margin: 0;
+  }
+  .titleblock-fields{
+    border-left: 1px solid var(--line-bold);
+    display: grid;
+    grid-template-rows: repeat(4, 1fr);
+    min-width: 220px;
+  }
+  .tf-row{
+    border-bottom: 1px solid var(--line-bold);
+    padding: 10px 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 3px;
+  }
+  .tf-row:last-child{ border-bottom: none; }
+  .tf-label{
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--on-navy-dim);
+    letter-spacing: 0.03em;
+  }
+  .tf-value{
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--on-navy);
+  }
+  .tf-value input[type="date"]{
+    background: transparent;
+    border: none;
+    color: var(--amber);
+    font-family: var(--font-mono);
+    font-size: 14px;
+    padding: 0;
+  }
+  .tf-value input[type="date"]::-webkit-calendar-picker-indicator{ filter: invert(0.8); cursor: pointer; }
+
+  /* ---------- Dashboard ---------- */
+  .dash{
+    margin-top: 18px;
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 1px;
+    background: var(--line-bold);
+    border: 1px solid var(--line-bold);
+  }
+  @media (max-width: 760px){ .dash{ grid-template-columns: 1fr; } }
+
+  .dash-panel{ background: var(--navy-deep); padding: 22px 24px; }
+  .dash-h{
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--on-navy-dim);
+    letter-spacing: 0.03em;
+    margin: 0 0 14px;
+  }
+
+  .headline-stat{ display: flex; align-items: baseline; gap: 10px; margin-bottom: 4px; }
+  .headline-stat .num{ font-family: var(--font-display); font-size: 46px; font-weight: 700; color: var(--amber); line-height: 1; }
+  .headline-stat .of{ font-family: var(--font-mono); font-size: 15px; color: var(--on-navy-dim); }
+  .headline-sub{ font-size: 13.5px; color: var(--on-navy-dim); margin-bottom: 16px; }
+
+  .bar{ height: 8px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; margin-bottom: 4px; }
+  .bar > i{ display: block; height: 100%; background: linear-gradient(90deg, var(--amber-dim), var(--amber)); border-radius: 2px; }
+  .bar.thin{ height: 5px; }
+
+  .cat-grid{ display: grid; gap: 10px; }
+  .cat-row{ display: grid; grid-template-columns: 108px 1fr 44px; align-items: center; gap: 10px; }
+  .cat-row span.name{ font-size: 12.5px; color: var(--on-navy-dim); }
+  .cat-row span.count{ font-family: var(--font-mono); font-size: 12px; color: var(--on-navy-dim); text-align: right; }
+
+  .today-callout{
+    border: 1px dashed var(--amber-dim);
+    padding: 14px 16px;
+    margin-top: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .today-callout .t1{ font-family: var(--font-mono); font-size: 11px; color: var(--amber); letter-spacing: 0.03em; margin-bottom: 4px; }
+  .today-callout .t2{ font-family: var(--font-display); font-size: 18px; font-weight: 600; }
+  .btn{
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    background: transparent;
+    color: var(--on-navy);
+    border: 1px solid var(--line-bold);
+    padding: 9px 14px;
+    cursor: pointer;
+    letter-spacing: 0.02em;
+  }
+  .btn:hover{ border-color: var(--amber); color: var(--amber); }
+  .btn.solid{ background: var(--amber); color: var(--navy-deep); border-color: var(--amber); font-weight: 600; }
+  .btn.solid:hover{ background: var(--teal); border-color: var(--teal); color: var(--navy-deep); }
+
+  /* ---------- Controls ---------- */
+  .controls{
+    margin-top: 30px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .search-field{
+    flex: 1 1 260px;
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--line-bold);
+    background: var(--navy-deep);
+    padding: 0 12px;
+  }
+  .search-field input{
+    background: transparent; border: none; color: var(--on-navy);
+    font-family: var(--font-mono); font-size: 13px; padding: 10px 8px; width: 100%;
+  }
+  .search-field span{ color: var(--on-navy-dim); font-family: var(--font-mono); font-size: 13px; }
+  .controls-right{ display: flex; gap: 8px; flex-wrap: wrap; }
+
+  /* ---------- Week sheets ---------- */
+  .sheet{
+    margin-top: 34px;
+    border: 1px solid var(--line-bold);
+    background: rgba(7, 26, 52, 0.55);
+  }
+  .sheet-head{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 18px 22px;
+    border-bottom: 1px solid var(--line-bold);
+  }
+  .sheet-head h2{
+    font-family: var(--font-display);
+    font-size: 24px;
+    margin: 0 0 4px;
+    font-weight: 600;
+  }
+  .sheet-head .focus{ font-size: 13px; color: var(--on-navy-dim); }
+  .sheet-progress{ min-width: 160px; text-align: right; }
+  .sheet-progress .n{ font-family: var(--font-mono); font-size: 13px; color: var(--amber); }
+
+  .days{ display: grid; gap: 1px; background: var(--line-fine); }
+
+  details.day{ background: var(--navy-deep); }
+  details.day[open]{ background: rgba(255,255,255,0.015); }
+  details.day.today{ box-shadow: inset 3px 0 0 var(--amber); }
+
+  details.day > summary{
+    list-style: none;
+    cursor: pointer;
+    padding: 15px 22px;
+    display: grid;
+    grid-template-columns: 90px 1fr auto 130px;
+    align-items: center;
+    gap: 14px;
+  }
+  details.day > summary::-webkit-details-marker{ display:none; }
+  @media (max-width: 700px){
+    details.day > summary{ grid-template-columns: 1fr auto; grid-template-areas: "label chev" "focus focus" "bar bar"; row-gap: 8px; }
+    .day-label{ grid-area: label; } .day-chev{ grid-area: chev; }
+    .day-focus{ grid-area: focus; } .day-barwrap{ grid-area: bar; }
+  }
+
+  .day-label{ font-family: var(--font-mono); font-size: 13px; color: var(--on-navy-dim); }
+  .day-label b{ color: var(--on-navy); display:block; font-size: 14px; }
+  .day-focus{ font-size: 13.5px; color: var(--on-navy-dim); }
+  .day-focus .badge{
+    font-family: var(--font-mono); font-size: 10px; color: var(--navy-deep);
+    background: var(--amber); padding: 2px 6px; margin-right: 8px; letter-spacing: 0.03em;
+  }
+  .day-barwrap{ display:flex; align-items:center; gap:8px; }
+  .day-barwrap .bar{ width: 90px; margin: 0; }
+  .day-count{ font-family: var(--font-mono); font-size: 12px; color: var(--on-navy-dim); white-space: nowrap; }
+  .day-chev{ font-family: var(--font-mono); color: var(--on-navy-dim); transition: transform .18s ease; }
+  details.day[open] .day-chev{ transform: rotate(90deg); }
+
+  .day-body{ padding: 4px 22px 20px; }
+
+  .row{
+    display: grid;
+    grid-template-columns: 24px 1fr auto auto auto auto;
+    align-items: center;
+    gap: 12px;
+    padding: 9px 0;
+    border-top: 1px solid var(--line-fine);
+  }
+  .row:first-child{ border-top: none; }
+  @media (max-width: 700px){
+    .row{ grid-template-columns: 24px 1fr; grid-template-areas: "chk name" ". meta" ". hintbtn"; row-gap: 6px; }
+    .row .pill, .row .company, .row .no{ grid-area: meta; justify-self: start; }
+    .row .meta-line{ grid-area: meta; display:flex; gap:8px; flex-wrap:wrap; }
+    .row .hint-btn{ grid-area: hintbtn; justify-self: start; }
+  }
+
+  .row input[type="checkbox"]{
+    width: 17px; height: 17px; accent-color: var(--amber); cursor: pointer;
+  }
+  .q-head{ display: flex; flex-direction: column; gap: 3px; }
+  .pattern-tag{
+    font-family: var(--font-mono); font-size: 10px; color: var(--teal);
+    letter-spacing: 0.02em; text-transform: none;
+  }
+  .row .name{ font-size: 14px; }
+  .row .name a{ text-decoration: none; }
+  .row .name a:hover{ text-decoration: underline; }
+  .row.done .name a{ color: var(--on-navy-dim); text-decoration: line-through; }
+  .row .no{ font-family: var(--font-mono); font-size: 11px; color: var(--on-navy-dim); }
+  .pill{
+    font-family: var(--font-mono); font-size: 10.5px; padding: 2px 7px; border: 1px solid var(--line-bold);
+    letter-spacing: 0.02em; white-space: nowrap;
+  }
+  .pill.E{ color: var(--teal); border-color: rgba(99,201,188,0.4); }
+  .pill.M{ color: var(--amber); border-color: rgba(227,168,87,0.4); }
+  .pill.H{ color: var(--red); border-color: rgba(217,118,91,0.4); }
+  .company{ font-size: 11.5px; color: var(--on-navy-dim); white-space: nowrap; }
+
+  .hint-btn{
+    font-family: var(--font-mono); font-size: 10.5px; color: var(--on-navy-dim);
+    background: transparent; border: 1px solid var(--line-bold); padding: 3px 9px;
+    cursor: pointer; white-space: nowrap;
+  }
+  .hint-btn:hover{ border-color: var(--amber); color: var(--amber); }
+  .hint-btn[aria-expanded="true"]{ border-color: var(--amber); color: var(--amber); }
+  .hint-panel{
+    grid-column: 2 / -1;
+    font-size: 13px; color: var(--on-navy-dim); line-height: 1.5;
+    padding: 2px 0 4px; border-left: 2px solid var(--amber-dim); padding-left: 10px;
+  }
+  @media (max-width: 700px){ .hint-panel{ grid-column: 1 / -1; } }
+
+  .task-row{ display: grid; grid-template-columns: 24px 1fr; gap: 12px; align-items: start; padding: 9px 0; border-top: 1px solid var(--line-fine); }
+  .task-row:first-child{ border-top: none; }
+  .task-row input[type="checkbox"]{ width:17px; height:17px; accent-color: var(--amber); cursor:pointer; margin-top:1px; }
+  .task-row .txt{ font-size: 13.5px; color: var(--on-navy-dim); line-height: 1.5; }
+  .task-row.done .txt{ color: var(--on-navy-dim); text-decoration: line-through; opacity: 0.6; }
+
+  .hidden{ display:none !important; }
+
+  footer{
+    margin-top: 50px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line-bold);
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--on-navy-dim);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  footer a{ color: var(--on-navy-dim); }
+  footer a:hover{ color: var(--amber); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="titleblock">
+    <div class="titleblock-main">
+      <p class="titleblock-eyebrow">INTERVIEW PREP / SCHEDULE OF WORK</p>
+      <h1>Blind 75 — Build Sheet</h1>
+      <p>Seventy-five problems, twenty-eight days, ten patterns. Set a start date and this sheet lines the plan up against the calendar — check things off as you clear them, and it keeps the record.</p>
+    </div>
+    <div class="titleblock-fields">
+      <div class="tf-row">
+        <span class="tf-label">START DATE</span>
+        <span class="tf-value"><input type="date" id="startDateInput"></span>
+      </div>
+      <div class="tf-row">
+        <span class="tf-label">DAY</span>
+        <span class="tf-value" id="fieldDay">—</span>
+      </div>
+      <div class="tf-row">
+        <span class="tf-label">SHEET</span>
+        <span class="tf-value" id="fieldSheet">—</span>
+      </div>
+      <div class="tf-row">
+        <span class="tf-label">STATUS</span>
+        <span class="tf-value" id="fieldStatus">—</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="dash">
+    <div class="dash-panel">
+      <p class="dash-h">PROGRESS</p>
+      <div class="headline-stat"><span class="num" id="solvedCount">0</span><span class="of" id="solvedOf">/ 75 solved</span></div>
+      <div class="bar"><i id="overallBar" style="width:0%"></i></div>
+      <p class="headline-sub" id="overallSub">0% of the list cleared.</p>
+
+      <div class="today-callout" id="todayCallout">
+        <div>
+          <div class="t1" id="todayTag">SET A START DATE</div>
+          <div class="t2" id="todayText">Pick a date on the right to line the plan up against today.</div>
+        </div>
+        <button class="btn solid" id="jumpToday">Jump to today</button>
+      </div>
+    </div>
+    <div class="dash-panel">
+      <p class="dash-h">BY PATTERN</p>
+      <div class="cat-grid" id="catGrid"></div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <div class="search-field">
+      <span>⌕</span>
+      <input type="text" id="searchInput" placeholder="Find a problem, pattern, or company…">
+    </div>
+    <div class="controls-right">
+      <button class="btn" id="expandAll">Expand all</button>
+      <button class="btn" id="collapseAll">Collapse all</button>
+      <button class="btn" id="exportBtn">Export progress</button>
+      <button class="btn" id="importBtn">Import</button>
+      <input type="file" id="importFile" accept="application/json" class="hidden">
+      <button class="btn" id="resetBtn">Reset all</button>
+    </div>
+  </div>
+
+  <div id="sheets"></div>
+
+  <footer>
+    <span>Blind 75 build sheet — tracks locally in this browser, nothing leaves your machine.</span>
+    <span>Original list via <a href="https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-75-LeetCode-Questions-to-Save-Your-Time-OaM1orEU" target="_blank" rel="noopener">Blind</a></span>
+  </footer>
+
+</div>
+
+<script>
+/* ---------------- Data: the 76 numbered entries (75 unique — #74 duplicates #43) ---------------- */
+const PROBLEMS = [
+  {no:1,name:"Two Sum",diff:"E",pattern:"Hash Map",co:"All FAANG",url:"two-sum",cat:"Array",hint:"Store each number's index in a hash map as you scan; check for the complement before inserting."},
+  {no:2,name:"Best Time to Buy and Sell Stock",diff:"E",pattern:"One Pass",co:"All FAANG",url:"best-time-to-buy-and-sell-stock",cat:"Array",hint:"Track the minimum price seen so far and the best profit at each step, in one pass."},
+  {no:3,name:"Contains Duplicate",diff:"E",pattern:"Hash Set",co:"All FAANG",url:"contains-duplicate",cat:"Array",hint:"A hash set lets you check \"have I seen this before?\" in O(1)."},
+  {no:4,name:"Product of Array Except Self",diff:"M",pattern:"Prefix/Suffix",co:"Meta, Apple",url:"product-of-array-except-self",cat:"Array",hint:"Build a prefix-product array left to right, then fold in a suffix product right to left."},
+  {no:5,name:"Maximum Subarray",diff:"M",pattern:"Kadane's Algorithm",co:"All FAANG",url:"maximum-subarray",cat:"Array",hint:"At each index, either extend the current run or restart at the current element — keep whichever is bigger."},
+  {no:6,name:"Maximum Product Subarray",diff:"M",pattern:"DP Variation",co:"All FAANG",url:"maximum-product-subarray",cat:"Array",hint:"Track a running max AND a running min — a negative number can flip the min into the new max."},
+  {no:7,name:"Find Minimum in Rotated Sorted Array",diff:"M",pattern:"Binary Search",co:"All FAANG",url:"find-minimum-in-rotated-sorted-array",cat:"Array",hint:"Binary search, comparing the middle element to the rightmost one to decide which half is unsorted."},
+  {no:8,name:"Search in Rotated Sorted Array",diff:"M",pattern:"Binary Search",co:"All FAANG",url:"search-in-rotated-sorted-array",cat:"Array",hint:"Binary search, but first work out which half of the current range is actually sorted."},
+  {no:9,name:"3Sum",diff:"M",pattern:"Two Pointers",co:"All FAANG",url:"3sum",cat:"Array",hint:"Sort the array, fix one number, then two-pointer the remainder for the other two."},
+  {no:10,name:"Container With Most Water",diff:"M",pattern:"Two Pointers",co:"All FAANG",url:"container-with-most-water",cat:"Array",hint:"Two pointers starting at the outer edges; always move the pointer at the shorter wall inward."},
+
+  {no:11,name:"Sum of Two Integers",diff:"M",pattern:"Bit Manipulation",co:"Apple, Amazon",url:"sum-of-two-integers",cat:"Binary",hint:"XOR gives the sum without carries; AND shifted left gives the carries. Repeat until there's no carry left."},
+  {no:12,name:"Number of 1 Bits",diff:"E",pattern:"Bit Counting",co:"All FAANG",url:"number-of-1-bits",cat:"Binary",hint:"n & (n-1) clears the lowest set bit — count how many times you can do that."},
+  {no:13,name:"Counting Bits",diff:"E",pattern:"DP + Bits",co:"All FAANG",url:"counting-bits",cat:"Binary",hint:"dp[i] = dp[i >> 1] + (i & 1) — reuse the bit count you already computed for a smaller number."},
+  {no:14,name:"Missing Number",diff:"E",pattern:"XOR / Math",co:"All FAANG",url:"missing-number",cat:"Binary",hint:"XOR every index with every value in the array — matching pairs cancel out, leaving the missing one."},
+  {no:15,name:"Reverse Bits",diff:"E",pattern:"Bit Manipulation",co:"Apple, Amazon",url:"reverse-bits",cat:"Binary",hint:"Shift your answer left, pull the lowest bit off n, OR it in, and repeat 32 times."},
+
+  {no:16,name:"Climbing Stairs",diff:"E",pattern:"Basic DP",co:"All FAANG",url:"climbing-stairs",cat:"Dynamic Programming",hint:"It's Fibonacci in disguise: ways(n) = ways(n-1) + ways(n-2)."},
+  {no:17,name:"Coin Change",diff:"M",pattern:"Unbounded Knapsack",co:"All FAANG",url:"coin-change",cat:"Dynamic Programming",hint:"Bottom-up: dp[amount] = 1 + the minimum of dp[amount - coin] over every coin you can use."},
+  {no:18,name:"Longest Increasing Subsequence",diff:"M",pattern:"LIS",co:"All FAANG",url:"longest-increasing-subsequence",cat:"Dynamic Programming",hint:"Keep the smallest possible tail value for each subsequence length; binary search where a new number fits."},
+  {no:19,name:"Longest Common Subsequence",diff:"M",pattern:"2D DP",co:"All FAANG",url:"longest-common-subsequence",cat:"Dynamic Programming",hint:"2D table where dp[i][j] depends on whether the characters at i and j match."},
+  {no:20,name:"Word Break",diff:"M",pattern:"String DP",co:"All FAANG",url:"word-break",cat:"Dynamic Programming",hint:"dp[i] is true if some earlier dp[j] is true and the substring s[j:i] is in the dictionary."},
+  {no:21,name:"Combination Sum IV",diff:"M",pattern:"Permutation DP",co:"Amazon, Google",url:"combination-sum-iv",cat:"Dynamic Programming",hint:"Order matters here — for each target total, try adding each number as the last one used."},
+  {no:22,name:"House Robber",diff:"M",pattern:"Linear DP",co:"All FAANG",url:"house-robber",cat:"Dynamic Programming",hint:"dp[i] = max(dp[i-1], dp[i-2] + nums[i]) — either skip this house or rob it."},
+  {no:23,name:"House Robber II",diff:"M",pattern:"Circular DP",co:"All FAANG",url:"house-robber-ii",cat:"Dynamic Programming",hint:"Circular just means: run House Robber twice, once excluding the first house and once excluding the last."},
+  {no:24,name:"Decode Ways",diff:"M",pattern:"String DP",co:"All FAANG",url:"decode-ways",cat:"Dynamic Programming",hint:"dp[i] adds in the single-digit decoding and, when valid, the two-digit decoding as well."},
+  {no:25,name:"Unique Paths",diff:"M",pattern:"Grid DP",co:"All FAANG",url:"unique-paths",cat:"Dynamic Programming",hint:"Each cell's path count is just the sum of the cell above it and the cell to its left."},
+  {no:26,name:"Jump Game",diff:"M",pattern:"Greedy / DP",co:"All FAANG",url:"jump-game",cat:"Dynamic Programming",hint:"Greedily track the furthest index reachable so far as you scan left to right."},
+
+  {no:27,name:"Clone Graph",diff:"M",pattern:"DFS/BFS Clone",co:"All FAANG",url:"clone-graph",cat:"Graph",hint:"DFS or BFS with a hash map from original node to its clone, so you never clone the same node twice."},
+  {no:28,name:"Course Schedule",diff:"M",pattern:"Topological Sort",co:"All FAANG",url:"course-schedule",cat:"Graph",hint:"You're detecting a cycle in the prerequisite graph — topological sort or DFS with a visiting/visited state."},
+  {no:29,name:"Pacific Atlantic Water Flow",diff:"M",pattern:"DFS",co:"Google, Amazon",url:"pacific-atlantic-water-flow",cat:"Graph",hint:"Run DFS inward from both oceans' border cells separately, then intersect the two reachable sets."},
+  {no:30,name:"Number of Islands",diff:"M",pattern:"DFS/BFS",co:"All FAANG",url:"number-of-islands",cat:"Graph",hint:"DFS or BFS from every unvisited land cell, sinking the whole island as you go."},
+  {no:31,name:"Longest Consecutive Sequence",diff:"M",pattern:"Union Find",co:"Google, Meta",url:"longest-consecutive-sequence",cat:"Graph",hint:"Put everything in a set; only start counting a run from a number whose predecessor isn't in the set."},
+  {no:32,name:"Alien Dictionary",diff:"H",pattern:"Topological Sort",co:"Google, Meta",url:"alien-dictionary",cat:"Graph",premium:true,hint:"Build a \"comes before\" graph from adjacent word pairs, then topologically sort the letters."},
+  {no:33,name:"Graph Valid Tree",diff:"M",pattern:"Union Find",co:"Google, Meta",url:"graph-valid-tree",cat:"Graph",premium:true,hint:"A valid tree has exactly n-1 edges and is fully connected — union-find catches any cycle."},
+  {no:34,name:"Number of Connected Components in an Undirected Graph",diff:"M",pattern:"Union Find",co:"Google, Meta",url:"number-of-connected-components-in-an-undirected-graph",cat:"Graph",premium:true,hint:"Union-find: union every edge's endpoints, then count the distinct roots left over."},
+
+  {no:35,name:"Insert Interval",diff:"M",pattern:"Interval Merge",co:"All FAANG",url:"insert-interval",cat:"Interval",hint:"Walk the sorted intervals: keep everything before the overlap, merge through the overlap, keep the rest."},
+  {no:36,name:"Merge Intervals",diff:"M",pattern:"Sorting + Merge",co:"All FAANG",url:"merge-intervals",cat:"Interval",hint:"Sort by start time, then merge whenever the current interval's start falls inside the previous end."},
+  {no:37,name:"Non-overlapping Intervals",diff:"M",pattern:"Greedy",co:"Amazon, Google",url:"non-overlapping-intervals",cat:"Interval",hint:"Sort by end time and greedily keep whichever interval finishes earliest."},
+  {no:38,name:"Meeting Rooms",diff:"E",pattern:"Sorting",co:"All FAANG",url:"meeting-rooms",cat:"Interval",premium:true,hint:"Sort by start time and check that no meeting starts before the previous one has ended."},
+  {no:39,name:"Meeting Rooms II",diff:"M",pattern:"Heap / Greedy",co:"All FAANG",url:"meeting-rooms-ii",cat:"Interval",premium:true,hint:"Sort start and end times separately, or use a min-heap of currently active end times."},
+
+  {no:40,name:"Reverse Linked List",diff:"E",pattern:"Iterative/Recursive",co:"All FAANG",url:"reverse-linked-list",cat:"Linked List",hint:"Walk the list with prev/curr pointers, flipping each node's next pointer as you pass it."},
+  {no:41,name:"Detect Cycle in Linked List",diff:"E",pattern:"Two Pointers",co:"All FAANG",url:"linked-list-cycle",cat:"Linked List",hint:"Floyd's slow/fast pointers — if a cycle exists, they're guaranteed to eventually meet."},
+  {no:42,name:"Merge Two Sorted Lists",diff:"E",pattern:"Two Pointers",co:"All FAANG",url:"merge-two-sorted-lists",cat:"Linked List",hint:"Walk both lists together, always attaching whichever current node is smaller."},
+  {no:43,name:"Merge k Sorted Lists",diff:"H",pattern:"Divide & Conquer",co:"All FAANG",url:"merge-k-sorted-lists",cat:"Linked List",hint:"Merge the lists in pairs, divide-and-conquer style — or pull from a min-heap of the current list heads."},
+  {no:44,name:"Remove Nth Node From End of List",diff:"M",pattern:"Two Pointers",co:"Amazon, Google",url:"remove-nth-node-from-end-of-list",cat:"Linked List",hint:"Move one pointer n steps ahead first, then advance both pointers together until the lead one hits the end."},
+  {no:45,name:"Reorder List",diff:"M",pattern:"Multiple Steps",co:"Meta, Amazon",url:"reorder-list",cat:"Linked List",hint:"Find the middle, reverse the second half, then weave the two halves together node by node."},
+
+  {no:46,name:"Set Matrix Zeroes",diff:"M",pattern:"In-place Modification",co:"Amazon, Apple",url:"set-matrix-zeroes",cat:"Matrix",hint:"Use the first row and first column themselves as your zero-markers to get O(1) extra space."},
+  {no:47,name:"Spiral Matrix",diff:"M",pattern:"Matrix Traversal",co:"All FAANG",url:"spiral-matrix",cat:"Matrix",hint:"Track four shrinking boundaries — top, bottom, left, right — and walk each edge in turn."},
+  {no:48,name:"Rotate Image",diff:"M",pattern:"Matrix Rotation",co:"All FAANG",url:"rotate-image",cat:"Matrix",hint:"Transpose the matrix, then reverse each row (or reverse first, then transpose)."},
+  {no:49,name:"Word Search",diff:"M",pattern:"Backtracking",co:"All FAANG",url:"word-search",cat:"Matrix",hint:"Backtrack from each starting cell, marking visited cells and un-marking them on the way back out."},
+
+  {no:50,name:"Longest Substring Without Repeating Characters",diff:"M",pattern:"Sliding Window",co:"All FAANG",url:"longest-substring-without-repeating-characters",cat:"String",hint:"Sliding window with a map of each character's last seen index; shrink from the left on a repeat."},
+  {no:51,name:"Longest Repeating Character Replacement",diff:"M",pattern:"Sliding Window",co:"Google, Meta",url:"longest-repeating-character-replacement",cat:"String",hint:"Sliding window; it's valid while (window length − count of the most frequent character) ≤ k."},
+  {no:52,name:"Minimum Window Substring",diff:"H",pattern:"Sliding Window",co:"Meta, Amazon",url:"minimum-window-substring",cat:"String",hint:"Expand the window until it satisfies the target, then shrink from the left as far as it still does."},
+  {no:53,name:"Valid Anagram",diff:"E",pattern:"Hash Map",co:"All FAANG",url:"valid-anagram",cat:"String",hint:"Count character frequencies in both strings and compare — or sort both and compare directly."},
+  {no:54,name:"Group Anagrams",diff:"M",pattern:"Hash Map",co:"Google, Amazon",url:"group-anagrams",cat:"String",hint:"Use each word's sorted letters (or a character-count signature) as its hash map key."},
+  {no:55,name:"Valid Parentheses",diff:"E",pattern:"Stack",co:"All FAANG",url:"valid-parentheses",cat:"String",hint:"A stack: push every opening bracket, and pop-and-check on every closing one."},
+  {no:56,name:"Valid Palindrome",diff:"E",pattern:"Two Pointers",co:"Meta, Apple",url:"valid-palindrome",cat:"String",hint:"Two pointers closing in from both ends, skipping any non-alphanumeric characters as you go."},
+  {no:57,name:"Longest Palindromic Substring",diff:"M",pattern:"Expand Centers",co:"All FAANG",url:"longest-palindromic-substring",cat:"String",hint:"Expand outward from every possible center — once for odd-length palindromes, once for even."},
+  {no:58,name:"Palindromic Substrings",diff:"M",pattern:"Expand Centers",co:"Amazon, Google",url:"palindromic-substrings",cat:"String",hint:"Same expand-around-center idea as above — just count every valid expansion instead of tracking the longest."},
+  {no:59,name:"Encode and Decode Strings",diff:"M",pattern:"String Encoding",co:"Google, Meta",url:"encode-and-decode-strings",cat:"String",premium:true,hint:"Prefix each string with its length and a delimiter, so decoding is never confused by the string's own content."},
+
+  {no:60,name:"Maximum Depth of Binary Tree",diff:"E",pattern:"DFS/BFS",co:"All FAANG",url:"maximum-depth-of-binary-tree",cat:"Tree",hint:"Recursively: it's 1 + the larger of the two subtrees' depths."},
+  {no:61,name:"Same Tree",diff:"E",pattern:"DFS",co:"All FAANG",url:"same-tree",cat:"Tree",hint:"Recursively check that the current two nodes match, then recurse into left and right together."},
+  {no:62,name:"Invert Binary Tree",diff:"E",pattern:"DFS/BFS",co:"All FAANG",url:"invert-binary-tree",cat:"Tree",hint:"Recursively swap the left and right children at every node."},
+  {no:63,name:"Binary Tree Maximum Path Sum",diff:"H",pattern:"DFS",co:"All FAANG",url:"binary-tree-maximum-path-sum",cat:"Tree",hint:"At each node, track the best path passing through it, but only return the best one-sided path upward."},
+  {no:64,name:"Binary Tree Level Order Traversal",diff:"M",pattern:"BFS",co:"All FAANG",url:"binary-tree-level-order-traversal",cat:"Tree",hint:"BFS with a queue, processing one full level at a time (snapshot the queue's size at the start of each level)."},
+  {no:65,name:"Serialize and Deserialize Binary Tree",diff:"H",pattern:"DFS/BFS",co:"All FAANG",url:"serialize-and-deserialize-binary-tree",cat:"Tree",hint:"Preorder DFS with an explicit marker for null children, so the same order reconstructs the tree."},
+  {no:66,name:"Subtree of Another Tree",diff:"E",pattern:"DFS",co:"Amazon, Meta",url:"subtree-of-another-tree",cat:"Tree",hint:"For every node in the big tree, check whether the tree rooted there is identical to the target tree."},
+  {no:67,name:"Construct Binary Tree from Preorder and Inorder Traversal",diff:"M",pattern:"Recursion",co:"All FAANG",url:"construct-binary-tree-from-preorder-and-inorder-traversal",cat:"Tree",hint:"The first preorder value is the root; find it in inorder to split the left and right subtrees."},
+  {no:68,name:"Validate Binary Search Tree",diff:"M",pattern:"DFS",co:"All FAANG",url:"validate-binary-search-tree",cat:"Tree",hint:"Recurse with a valid (low, high) range for each node, instead of only comparing parent to child."},
+  {no:69,name:"Kth Smallest Element in a BST",diff:"M",pattern:"Inorder",co:"All FAANG",url:"kth-smallest-element-in-a-bst",cat:"Tree",hint:"An inorder traversal visits BST values in sorted order — just stop at the kth one."},
+  {no:70,name:"Lowest Common Ancestor of a BST",diff:"M",pattern:"BST Property",co:"All FAANG",url:"lowest-common-ancestor-of-a-binary-search-tree",cat:"Tree",hint:"Use the BST property: go left if both targets are smaller, right if both are bigger, else you've found it."},
+  {no:71,name:"Implement Trie (Prefix Tree)",diff:"M",pattern:"Trie Design",co:"All FAANG",url:"implement-trie-prefix-tree",cat:"Tree",hint:"Each node holds a map of child characters plus an end-of-word flag."},
+  {no:72,name:"Design Add and Search Words Data Structure",diff:"M",pattern:"Trie + DFS",co:"Google, Meta",url:"design-add-and-search-words-data-structure",cat:"Tree",hint:"Same trie as above, but DFS-branch on '.' since it needs to match any child."},
+  {no:73,name:"Word Search II",diff:"H",pattern:"Trie + Backtrack",co:"All FAANG",url:"word-search-ii",cat:"Tree",hint:"Build a trie of all target words, then DFS the board once, pruning any path the trie doesn't contain."},
+
+  {no:74,name:"Merge k Sorted Lists",diff:"H",pattern:"Min Heap",co:"All FAANG",url:"merge-k-sorted-lists",cat:"Heap",dupOf:43,hint:"Merge the lists in pairs, divide-and-conquer style — or pull from a min-heap of the current list heads."},
+  {no:75,name:"Top K Frequent Elements",diff:"M",pattern:"Max Heap",co:"All FAANG",url:"top-k-frequent-elements",cat:"Heap",hint:"Count frequencies first, then use a heap (or bucket sort by frequency) to pull out the top k."},
+  {no:76,name:"Find Median from Data Stream",diff:"H",pattern:"Two Heaps",co:"All FAANG",url:"find-median-from-data-stream",cat:"Heap",hint:"Two heaps — a max-heap for the lower half, a min-heap for the upper half — kept balanced in size."},
+];
+const byNo = n => PROBLEMS.find(p => p.no === n);
+const keyFor = p => "p" + (p.dupOf || p.no);
+
+/* ---------------- Schedule: 4 weeks x 7 days ---------------- */
+const SCHEDULE = [
+  { num:1, title:"Sheet 1 — Foundation", focus:"Arrays, binary, basic strings, opening tree patterns.",
+    days:[
+      {label:"Day 1", focus:"Array — set 1", problems:[1,2,3,4,5]},
+      {label:"Day 2", focus:"Array — set 2", problems:[6,7,8,9,10]},
+      {label:"Day 3", focus:"Binary", problems:[11,12,13,14,15]},
+      {label:"Day 4", focus:"String — set 1", problems:[50,51,52]},
+      {label:"Day 5", focus:"String — set 2", problems:[53,55,56]},
+      {label:"Day 6", focus:"Tree — basics", problems:[60,61,62]},
+      {label:"Day 7", focus:"Review", tasks:[
+        "Redo any problem from this week you didn't solve cleanly",
+        "Explain each pattern out loud without looking at notes: hash map, two pointers, Kadane's, binary search",
+        "Timed retry: pick 3 random problems from this week, solve within their time budget"
+      ]},
+    ]},
+  { num:2, title:"Sheet 2 — Core Patterns", focus:"Dynamic programming, linked lists, matrices.",
+    days:[
+      {label:"Day 1", focus:"DP — set 1", problems:[16,17,18,19]},
+      {label:"Day 2", focus:"DP — set 2", problems:[20,21,22,23]},
+      {label:"Day 3", focus:"DP — set 3", problems:[24,25,26]},
+      {label:"Day 4", focus:"Linked List — set 1", problems:[40,41,42]},
+      {label:"Day 5", focus:"Linked List — set 2", problems:[43,44,45]},
+      {label:"Day 6", focus:"Matrix", problems:[46,47,48,49]},
+      {label:"Day 7", focus:"Review", tasks:[
+        "Redo any DP problem where you couldn't write the recurrence from scratch",
+        "Draw out the state transition for House Robber, Decode Ways, and Unique Paths from memory",
+        "Timed retry: pick 3 random problems from this week, solve within their time budget"
+      ]},
+    ]},
+  { num:3, title:"Sheet 3 — Advanced Patterns", focus:"Graphs, trees, advanced strings, intervals.",
+    days:[
+      {label:"Day 1", focus:"Graph — set 1", problems:[27,28,29,30]},
+      {label:"Day 2", focus:"Graph — set 2", problems:[31,32,33,34]},
+      {label:"Day 3", focus:"Tree — set 1", problems:[63,64,65,66,67,68]},
+      {label:"Day 4", focus:"Tree — set 2", problems:[69,70,71,72,73]},
+      {label:"Day 5", focus:"Advanced strings", problems:[54,57,58,59]},
+      {label:"Day 6", focus:"Interval", problems:[35,36,37,38,39]},
+      {label:"Day 7", focus:"Review", tasks:[
+        "Redo any graph problem involving topological sort or union-find without hints",
+        "Re-derive BST validation and the trie insert/search operations from scratch",
+        "Timed retry: pick 3 random problems from this week, solve within their time budget"
+      ]},
+    ]},
+  { num:4, title:"Sheet 4 — Mastery", focus:"Heaps, the hardest problems, timed and mock rounds.",
+    days:[
+      {label:"Day 1", focus:"Heap", problems:[74,75,76]},
+      {label:"Day 2", focus:"Hardest problems — review", problems:[32,52,63,65]},
+      {label:"Day 3", focus:"Hardest problems — review", problems:[73,76,43]},
+      {label:"Day 4", focus:"Timed practice", tasks:[
+        "Timed set: 2 mediums back to back, 35 minutes each, no notes",
+        "Timed set: 1 easy + 1 hard, 20 + 55 minutes",
+        "Log where you lost time — reading the problem, choosing the approach, or debugging"
+      ]},
+      {label:"Day 5", focus:"Timed practice", tasks:[
+        "Timed set: 3 mediums from 3 different patterns, 30 minutes each",
+        "Redo yesterday's slowest problem cold, aiming to cut the time in half",
+        "Log where you lost time again and compare against Day 4"
+      ]},
+      {label:"Day 6", focus:"Mock interviews", tasks:[
+        "Mock interview 1 — array / string focus, talk through your approach out loud",
+        "Mock interview 2 — tree / graph focus",
+        "Mock interview 3 — DP / heap focus",
+        "Write down the two weakest moments across all three and what triggered them"
+      ]},
+      {label:"Day 7", focus:"Final review", tasks:[
+        "Review array, binary, and string patterns",
+        "Review dynamic programming and linked list patterns",
+        "Review graph and tree patterns",
+        "Review interval, matrix, and heap patterns",
+        "Run one last full mock loop, 3–4 rounds back to back"
+      ]},
+    ]},
+];
+
+/* ---------------- State ---------------- */
+const STORE_KEY = "blind75.state.v1";
+function loadState(){
+  try{
+    const raw = localStorage.getItem(STORE_KEY);
+    if(raw) return JSON.parse(raw);
+  }catch(e){}
+  return { startDate: null, done: {} };
+}
+function saveState(){ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }
+let state = loadState();
+
+/* ---------------- Helpers ---------------- */
+function dayIndexFromStart(){
+  if(!state.startDate) return null;
+  const start = new Date(state.startDate + "T00:00:00");
+  const today = new Date(); today.setHours(0,0,0,0);
+  const diff = Math.floor((today - start) / 86400000) + 1;
+  return diff;
+}
+function planPosition(dayIdx){
+  // dayIdx 1..28 -> {week, day}
+  if(dayIdx === null || dayIdx < 1 || dayIdx > 28) return null;
+  const week = Math.ceil(dayIdx / 7);
+  const day = dayIdx - (week - 1) * 7;
+  return { week, day };
+}
+function fmtDate(d){ return d.toLocaleDateString(undefined, {month:"short", day:"numeric"}); }
+function dateForDay(dayIdx){
+  if(!state.startDate) return null;
+  const start = new Date(state.startDate + "T00:00:00");
+  const d = new Date(start.getTime() + (dayIdx-1) * 86400000);
+  return d;
+}
+
+/* ---------------- Render ---------------- */
+const sheetsEl = document.getElementById("sheets");
+
+function taskKey(w,d,i){ return `t-w${w}d${d}-${i}`; }
+
+function render(){
+  sheetsEl.innerHTML = "";
+  const todayIdx = dayIndexFromStart();
+  const pos = planPosition(todayIdx);
+
+  SCHEDULE.forEach(week => {
+    const sheet = document.createElement("section");
+    sheet.className = "sheet";
+
+    let weekTotal = 0, weekDone = 0;
+
+    const daysWrap = document.createElement("div");
+    daysWrap.className = "days";
+
+    week.days.forEach((day, di) => {
+      const dayNum = di + 1;
+      const globalDayIdx = (week.num - 1) * 7 + dayNum;
+      const isToday = pos && pos.week === week.num && pos.day === dayNum;
+
+      const det = document.createElement("details");
+      det.className = "day" + (isToday ? " today" : "");
+      det.dataset.week = week.num; det.dataset.day = dayNum;
+
+      const items = [];
+      let total = 0, done = 0;
+
+      if(day.problems){
+        day.problems.forEach(no => {
+          const p = byNo(no);
+          const k = keyFor(p);
+          total++; weekTotal++;
+          const isDone = !!state.done[k];
+          if(isDone){ done++; weekDone++; }
+          items.push({type:"problem", p, k, isDone});
+        });
+      }
+      if(day.tasks){
+        day.tasks.forEach((txt, ti) => {
+          const k = taskKey(week.num, dayNum, ti);
+          total++; weekTotal++;
+          const isDone = !!state.done[k];
+          if(isDone){ done++; weekDone++; }
+          items.push({type:"task", txt, k, isDone});
+        });
+      }
+
+      const pct = total ? Math.round((done/total)*100) : 0;
+      const dateObj = dateForDay(globalDayIdx);
+
+      const summary = document.createElement("summary");
+      summary.innerHTML = `
+        <span class="day-label"><b>${day.label}</b>${dateObj ? fmtDate(dateObj) : "Week " + week.num}</span>
+        <span class="day-focus">${isToday ? '<span class="badge">TODAY</span>' : ''}${day.focus}</span>
+        <span class="day-barwrap"><span class="bar thin"><i style="width:${pct}%"></i></span><span class="day-count">${done}/${total}</span></span>
+        <span class="day-chev">▸</span>
+      `;
+      det.appendChild(summary);
+      if(isToday) det.open = true;
+
+      const body = document.createElement("div");
+      body.className = "day-body";
+
+      items.forEach(it => {
+        if(it.type === "problem"){
+          const row = document.createElement("div");
+          row.className = "row" + (it.isDone ? " done" : "");
+          row.dataset.search = (it.p.name + " " + it.p.pattern + " " + it.p.co).toLowerCase();
+          row.innerHTML = `
+            <input type="checkbox" ${it.isDone ? "checked" : ""} aria-label="Mark ${it.p.name} done">
+            <span class="q-head">
+              <span class="pattern-tag">${it.p.pattern}</span>
+              <span class="name"><a href="https://leetcode.com/problems/${it.p.url}/" target="_blank" rel="noopener">${it.p.name}</a></span>
+            </span>
+            <span class="no">#${String(it.p.no).padStart(2,'0')}</span>
+            <span class="pill ${it.p.diff}">${it.p.diff === 'E' ? 'Easy' : it.p.diff === 'M' ? 'Medium' : 'Hard'}</span>
+            <span class="company">${it.p.co}</span>
+            <button type="button" class="hint-btn" aria-expanded="false">Hint</button>
+          `;
+          const cb = row.querySelector("input");
+          cb.addEventListener("change", () => {
+            if(cb.checked) state.done[it.k] = true; else delete state.done[it.k];
+            saveState(); render();
+          });
+          const hintBtn = row.querySelector(".hint-btn");
+          const hintPanel = document.createElement("div");
+          hintPanel.className = "hint-panel hidden";
+          hintPanel.textContent = it.p.hint;
+          hintBtn.addEventListener("click", () => {
+            const showing = hintPanel.classList.contains("hidden");
+            hintPanel.classList.toggle("hidden", !showing);
+            hintBtn.setAttribute("aria-expanded", String(showing));
+            hintBtn.textContent = showing ? "Hide hint" : "Hint";
+          });
+          body.appendChild(row);
+          body.appendChild(hintPanel);
+        } else {
+          const row = document.createElement("div");
+          row.className = "task-row" + (it.isDone ? " done" : "");
+          row.dataset.search = it.txt.toLowerCase();
+          row.innerHTML = `<input type="checkbox" ${it.isDone ? "checked" : ""}><span class="txt">${it.txt}</span>`;
+          const cb = row.querySelector("input");
+          cb.addEventListener("change", () => {
+            if(cb.checked) state.done[it.k] = true; else delete state.done[it.k];
+            saveState(); render();
+          });
+          body.appendChild(row);
+        }
+      });
+
+      det.appendChild(body);
+      daysWrap.appendChild(det);
+    });
+
+    const head = document.createElement("div");
+    head.className = "sheet-head";
+    const wpct = weekTotal ? Math.round((weekDone/weekTotal)*100) : 0;
+    head.innerHTML = `
+      <div><h2>${week.title}</h2><div class="focus">${week.focus}</div></div>
+      <div class="sheet-progress"><div class="n">${weekDone} / ${weekTotal} — ${wpct}%</div><div class="bar"><i style="width:${wpct}%"></i></div></div>
+    `;
+    sheet.appendChild(head);
+    sheet.appendChild(daysWrap);
+    sheetsEl.appendChild(sheet);
+  });
+
+  renderDashboard(todayIdx, pos);
+  applySearch();
+}
+
+function renderDashboard(todayIdx, pos){
+  const uniqueProblems = PROBLEMS.filter(p => !p.dupOf);
+  const totalProblems = uniqueProblems.length;
+  const solvedProblems = uniqueProblems.filter(p => state.done[keyFor(p)]).length;
+
+  document.getElementById("solvedCount").textContent = solvedProblems;
+  document.getElementById("solvedOf").textContent = `/ ${totalProblems} solved`;
+  const pct = Math.round((solvedProblems/totalProblems)*100);
+  document.getElementById("overallBar").style.width = pct + "%";
+  document.getElementById("overallSub").textContent = `${pct}% of the list cleared.`;
+
+  // category grid
+  const cats = {};
+  uniqueProblems.forEach(p => {
+    cats[p.cat] = cats[p.cat] || {total:0, done:0};
+    cats[p.cat].total++;
+    if(state.done[keyFor(p)]) cats[p.cat].done++;
+  });
+  const catGrid = document.getElementById("catGrid");
+  catGrid.innerHTML = "";
+  Object.keys(cats).forEach(cat => {
+    const c = cats[cat];
+    const cpct = Math.round((c.done/c.total)*100);
+    const row = document.createElement("div");
+    row.className = "cat-row";
+    row.innerHTML = `<span class="name">${cat}</span><span class="bar"><i style="width:${cpct}%"></i></span><span class="count">${c.done}/${c.total}</span>`;
+    catGrid.appendChild(row);
+  });
+
+  // title block fields
+  document.getElementById("fieldDay").textContent = todayIdx === null ? "—" : (todayIdx < 1 ? "not started" : todayIdx > 28 ? "28 / 28" : `${todayIdx} / 28`);
+  document.getElementById("fieldSheet").textContent = pos ? `${pos.week} of 4` : (todayIdx > 28 ? "4 of 4" : "—");
+  document.getElementById("fieldStatus").textContent = pct === 100 ? "complete" : todayIdx === null ? "unset" : "in progress";
+
+  // today callout
+  const tag = document.getElementById("todayTag");
+  const text = document.getElementById("todayText");
+  if(!state.startDate){
+    tag.textContent = "SET A START DATE";
+    text.textContent = "Pick a date on the right to line the plan up against today.";
+  } else if(todayIdx < 1){
+    tag.textContent = "NOT STARTED YET";
+    text.textContent = `Your plan begins ${dateForDay(1).toLocaleDateString(undefined,{weekday:"long", month:"short", day:"numeric"})}.`;
+  } else if(todayIdx > 28){
+    tag.textContent = "PLAN COMPLETE";
+    text.textContent = pct === 100 ? "All 75 problems cleared. Keep the streak going with a fresh pass." : "You've reached day 28 — go back and close out anything still open.";
+  } else {
+    const d = SCHEDULE[pos.week-1].days[pos.day-1];
+    tag.textContent = `WEEK ${pos.week}, DAY ${pos.day} · TODAY`;
+    text.textContent = d.focus;
+  }
+}
+
+/* ---------------- Search ---------------- */
+function applySearch(){
+  const q = document.getElementById("searchInput").value.trim().toLowerCase();
+  document.querySelectorAll(".row, .task-row").forEach(row => {
+    const match = !q || (row.dataset.search || "").includes(q);
+    row.classList.toggle("hidden", !match);
+  });
+  document.querySelectorAll("details.day").forEach(det => {
+    const rows = det.querySelectorAll(".row, .task-row");
+    const anyVisible = Array.from(rows).some(r => !r.classList.contains("hidden"));
+    if(q){ det.open = anyVisible; }
+  });
+}
+document.getElementById("searchInput").addEventListener("input", applySearch);
+
+/* ---------------- Controls ---------------- */
+document.getElementById("startDateInput").addEventListener("change", e => {
+  state.startDate = e.target.value || null;
+  saveState(); render();
+});
+document.getElementById("jumpToday").addEventListener("click", () => {
+  const el = document.querySelector("details.day.today");
+  if(el){ el.open = true; el.scrollIntoView({behavior:"smooth", block:"center"}); }
+});
+document.getElementById("expandAll").addEventListener("click", () => {
+  document.querySelectorAll("details.day").forEach(d => d.open = true);
+});
+document.getElementById("collapseAll").addEventListener("click", () => {
+  document.querySelectorAll("details.day").forEach(d => d.open = false);
+});
+document.getElementById("resetBtn").addEventListener("click", () => {
+  if(confirm("Reset all progress and your start date? This can't be undone.")){
+    state = { startDate: null, done: {} };
+    saveState();
+    document.getElementById("startDateInput").value = "";
+    render();
+  }
+});
+document.getElementById("exportBtn").addEventListener("click", () => {
+  const blob = new Blob([JSON.stringify(state, null, 2)], {type:"application/json"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "blind75-progress.json";
+  a.click();
+});
+document.getElementById("importBtn").addEventListener("click", () => document.getElementById("importFile").click());
+document.getElementById("importFile").addEventListener("change", e => {
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try{
+      const parsed = JSON.parse(reader.result);
+      if(parsed && typeof parsed === "object" && parsed.done){
+        state = { startDate: parsed.startDate || null, done: parsed.done || {} };
+        saveState();
+        document.getElementById("startDateInput").value = state.startDate || "";
+        render();
+      } else {
+        alert("That file doesn't look like a valid progress export.");
+      }
+    }catch(err){ alert("Couldn't read that file."); }
+  };
+  reader.readAsText(file);
+  e.target.value = "";
+});
+
+/* ---------------- Init ---------------- */
+document.getElementById("startDateInput").value = state.startDate || "";
+render();
+</script>
+</body>
+</html>
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Core 36 — Pattern Map</title>
 <style>
   :root{
@@ -625,4 +1513,4 @@ document.getElementById("reset-btn").addEventListener("click", async () => {
 })();
 </script>
 </body>
-</html>
+</html> -->
