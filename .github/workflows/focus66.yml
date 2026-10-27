@@ -1,0 +1,25 @@
+name: Focus 66 checks
+
+on:
+  push:
+    branches: [main, "feat/**"]
+  pull_request:
+    branches: [main]
+
+jobs:
+  planner-tests:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Check module syntax
+        run: |
+          node --check plan-data.js
+          node --check planner-core.js
+          node --check planner.js
+      - name: Run unit tests
+        run: npm test
