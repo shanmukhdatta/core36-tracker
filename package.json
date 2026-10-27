@@ -1,0 +1,11 @@
+{
+  "name": "core36-focus66",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

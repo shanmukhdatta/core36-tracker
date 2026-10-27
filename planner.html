@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111c2f">
+  <meta name="description" content="A 66-day preparation dashboard for GATE DA, LeetCode, AI projects, research, college and wellbeing.">
+  <title>Focus 66 · Core36 Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./planner.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to planner</a>
+  <header class="topbar">
+    <div class="top-inner">
+      <a class="brand" href="./planner.html" aria-label="Focus 66 dashboard"><span class="brand-mark">36<span>.</span></span><span class="brand-text">CORE36 <small>/ FOCUS 66</small></span></a>
+      <nav class="top-nav" aria-label="Primary">
+        <a class="nav-link active" href="#today">My day</a>
+        <a class="nav-link" href="#roadmap">Roadmap</a>
+        <a class="nav-link" href="#insights">Progress</a>
+        <a class="nav-link legacy" href="./index.html">Blind 75 ↗</a>
+      </nav>
+      <span class="local-pill"><span class="pulse"></span> PRIVATELY SAVED</span>
+    </div>
+  </header>
+  <main id="main" class="page">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-text">
+        <div class="eyebrow"><span class="eyebrow-line"></span> THE OCT–DEC 2026 SYSTEM <span class="mono">/ NIT JALANDHAR</span></div>
+        <h1 id="hero-title">Make the days <em>count.</em></h1>
+        <p>One place for LeetCode, <strong>GATE DA</strong>, offline AI projects, research, college and time to recharge. Every task has a date, a purpose and a place to mark real progress.</p>
+        <div class="hero-actions"><button id="jump-today" class="primary-btn">Go to today <span aria-hidden="true">↗</span></button><span class="range-chip">27 OCT — 31 DEC 2026</span></div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="hero-disc"><div class="hero-disc-inner"><span class="disc-number">66</span><span class="disc-label">DAYS OF<br>INTENTION</span></div></div>
+        <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><span class="star star-one">✳</span><span class="star star-two">+</span>
+        <div class="hero-caption">BUILD. UNDERSTAND. PROVE.</div>
+      </div>
+    </section>
+
+    <section id="insights" class="metrics" aria-label="Progress overview">
+      <article class="metric"><span class="metric-label">Sessions completed</span><div><strong id="stat-completed">0</strong><span class="metric-suffix">tracked</span></div><p>Only checked work counts</p></article>
+      <article class="metric"><span class="metric-label">DSA practice sessions</span><div><strong id="stat-dsa">0</strong><span class="metric-suffix">sessions</span></div><p>Explain, don't just submit</p></article>
+      <article class="metric"><span class="metric-label">Plan completion</span><div><strong id="stat-rate">0%</strong></div><div class="track"><div id="stat-bar" class="fill"></div></div></article>
+      <article class="metric"><span class="metric-label">Today's progress</span><div><strong id="stat-today">0/0</strong></div><p id="stat-today-sub">Choose a day to begin</p></article>
+    </section>
+
+    <div class="main-grid" id="today">
+      <section class="today-column" aria-labelledby="day-heading">
+        <div class="section-top">
+          <div><p class="kicker">YOUR DAILY WORKSPACE</p><h2 id="day-heading">Today's plan</h2></div>
+          <div class="date-controls">
+            <button class="square-btn" id="prev-day" aria-label="Previous date">←</button>
+            <input aria-label="Choose date" type="date" id="date-picker" min="2026-10-27" max="2026-12-31">
+            <button class="square-btn" id="next-day" aria-label="Next date">→</button>
+          </div>
+        </div>
+        <div id="week-strip" class="week-strip" role="group" aria-label="Dates this week"></div>
+        <div class="mode-panel">
+          <div><strong id="chosen-date">Tuesday, 27 Oct 2026</strong><p id="chosen-focus">Your focus for the day</p></div>
+          <label class="exam-toggle"><input type="checkbox" id="exam-mode"><span class="switch" aria-hidden="true"></span><span>Exam mode</span></label>
+        </div>
+        <p class="mode-explain" id="exam-note" hidden>College exams first. Your regular plan is preserved; switch back whenever you're ready.</p>
+        <div class="task-header"><span>SESSION CHECKLIST</span><span id="task-count">0 OF 0 DONE</span></div>
+        <div id="task-list" class="task-list" aria-live="polite"></div>
+        <div class="notes-card">
+          <div class="notes-header"><label for="day-notes">Today's learning log</label><span id="notes-status">Saved on this device</span></div>
+          <textarea id="day-notes" rows="3" maxlength="2000" placeholder="What did you solve, understand, test, or struggle with? Record real evidence."></textarea>
+          <p>Reflection beats streak pressure. Missed a day? Resume from the next task.</p>
+        </div>
+      </section>
+
+      <aside class="sidebar" aria-label="Study context">
+        <section class="sidebar-card phase-card" aria-labelledby="phase-title">
+          <p class="kicker">THIS WEEK'S MISSION</p>
+          <span class="phase-index" id="week-counter">WEEK 01 / 10</span>
+          <h3 id="phase-title">Start deliberately</h3>
+          <p id="week-outcome">Set up reproducible baselines.</p>
+          <div class="phase-tags"><span id="phase-badge">FOUNDATION</span><span id="gate-area-badge">PROBABILITY</span></div>
+          <div class="week-progress"><span>Weekly sessions</span><strong id="week-ratio">0 / 0</strong></div>
+          <div class="track"><div class="fill" id="week-bar"></div></div>
+        </section>
+        <section class="sidebar-card">
+          <p class="kicker">DA SYLLABUS FIRST</p>
+          <h3>Math ↔ Machine Learning</h3>
+          <p>Prioritize probability, linear algebra, calculus and ML. Python, algorithms and databases serve both GATE DA and placements.</p>
+          <a class="sidebar-link" href="https://gate2027.iitm.ac.in/exam_papers_and_syllabus" target="_blank" rel="noopener noreferrer">Official 2027 DA syllabus <span aria-hidden="true">↗</span></a>
+          <a class="sidebar-link" href="https://gate2027.iitm.ac.in/static/doc/GATE2027_Syllabus/DA_GATE2027_Syllabus.pdf" target="_blank" rel="noopener noreferrer">Download DA syllabus PDF <span aria-hidden="true">↗</span></a>
+        </section>
+        <section class="sidebar-card routine-card">
+          <p class="kicker">AFTER CLASS · DEFAULT</p>
+          <h3>Evening rhythm</h3>
+          <div class="routine-row"><time>5:45</time><span>Gym / movement</span></div>
+          <div class="routine-row"><time>7:00</time><span>LeetCode / patterns</span></div>
+          <div class="routine-row"><time>8:10</time><span>College coursework</span></div>
+          <div class="routine-row"><time>9:00</time><span>Dinner & family</span></div>
+          <div class="routine-row"><time>9:30</time><span>Project / research</span></div>
+          <div class="routine-row"><time>10:35</time><span>GATE DA + math/ML</span></div>
+          <p class="quiet-note">Wind down at 11:05; protect sufficient sleep. Weekends are flexible.</p>
+        </section>
+        <section class="sidebar-card backup-card">
+          <p class="kicker">YOUR DATA, YOUR CONTROL</p>
+          <h3>Keep a backup</h3>
+          <p>Progress is stored in this browser, not synced across devices. Export a JSON backup to move it safely.</p>
+          <div class="backup-actions"><button id="export" class="outline-btn">Export</button><button id="import" class="outline-btn">Import</button><input id="import-file" type="file" accept=".json,application/json" hidden></div>
+          <p id="storage-message" role="status" class="quiet-note"></p>
+        </section>
+      </aside>
+    </div>
+
+    <section id="roadmap" class="roadmap">
+      <div class="section-top"><div><p class="kicker">THE BIG PICTURE</p><h2>Ten focused weeks.</h2></div><p>Tap a week to open its first day. No artificial streaks; just evidence of effort.</p></div>
+      <div id="roadmap-grid" class="roadmap-grid"></div>
+    </section>
+    <section class="closing">
+      <div><span class="kicker">TWO MONTHS. ONE DIRECTION.</span><h2>Progress is built, not announced.</h2><p>GATE DA strengthens your math and ML foundation. Your projects demonstrate engineering. DSA, college fundamentals and honest research complete the profile.</p></div>
+      <a class="primary-btn" href="./index.html">Open the original Blind 75 ↗</a>
+    </section>
+  </main>
+  <footer class="site-footer"><span>CORE36 / FOCUS 66 · Personal study planner · Oct–Dec 2026</span><span>No account. No tracking. Local progress only.</span></footer>
+  <script type="module" src="./planner.js"></script>
+</body>
+</html>
